@@ -22,6 +22,69 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    sourceSets {
+        main.java.srcDirs += [
+            'src/main/kotlin',
+            'src/common/kotlin',
+            'src/debug/kotlin',
+            'src/release/kotlin',
+            'src/staging/kotlin',
+            'src/preproduction/kotlin',
+            'src/debug/java',
+            'src/release/java',
+            'src/staging/java',
+            'src/preproduction/java',
+            'src/testDebug/java',
+            'src/testDebug/kotlin',
+            'src/androidTestDebug/java',
+            'src/androidTestDebug/kotlin'
+        ]
+    }
+
+    buildTypes {
+        debug {
+            applicationIdSuffix ".dev"
+        }
+
+        staging {
+            debuggable true
+            applicationIdSuffix ".sta"
+        }
+
+        preproduction {
+            applicationIdSuffix ".pre"
+        }
+
+        release {}
+    }
+
+    // Specifies one flavor dimension.
+    // https://developer.android.com/studio/build/build-variants?utm_source=android-studio#product-flavors
+    flavorDimensions "version"
+    productFlavors {
+        demo {
+            // Assigns this product flavor to the "version" flavor dimension.
+            // If you are using only one dimension, this property is optional,
+            // and the plugin automatically assigns all the module's flavors to
+            // that dimension.
+            dimension "version"
+            applicationIdSuffix ".demo"
+            versionNameSuffix "-demo"
+        }
+
+        complete {
+            dimension "version"
+            applicationIdSuffix ".complete"
+            versionNameSuffix "-complete"
+        }
+
+        special {
+            dimension "version"
+            applicationIdSuffix ".special"
+            versionNameSuffix "-special"
+        }
+    }
 }
 
 dependencies {
@@ -29,9 +92,15 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:2.0.0'
+
+    implementation "com.google.code.gson:gson:2.8.6"
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
+    implementation "com.squareup.okhttp3:okhttp:4.7.2"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.7.2"
 
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-
 }
